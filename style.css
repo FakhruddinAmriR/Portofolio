@@ -129,6 +129,45 @@ header.nav {
 .hero {
   padding: 96px 0 88px;
 }
+.hero-inner {
+  display: flex;
+  align-items: center;
+  gap: 48px;
+}
+.hero-photo {
+  flex-shrink: 0;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background: repeating-linear-gradient(135deg, var(--bg-alt), var(--bg-alt) 10px, var(--bg) 10px, var(--bg) 20px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.hero-photo img {
+  display: block;
+  height: 260px;
+  width: auto;
+  max-width: 260px;
+  object-fit: cover;
+}
+@media (max-width: 700px) {
+  .hero-photo img {
+    height: 200px;
+    max-width: 200px;
+  }
+}
+.hero-text {
+  flex: 1;
+  min-width: 0;
+}
+@media (max-width: 700px) {
+  .hero-inner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 28px;
+  }
+}
 .eyebrow {
   font-family: var(--mono);
   font-size: 13px;
@@ -468,26 +507,35 @@ a.project-card {
   max-width: 16ch;
   line-height: 1.1;
 }
-.contact-links {
+.contact-icons {
   display: flex;
-  flex-direction: column;
-  gap: 10px;
+  gap: 14px;
+  flex-wrap: wrap;
 }
-.contact-links a {
-  font-family: var(--mono);
-  font-size: 14px;
-  color: var(--ink-soft);
+.contact-icon-btn {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
   display: flex;
   align-items: center;
-  gap: 8px;
-  transition: color 0.2s ease;
+  justify-content: center;
+  color: var(--ink-soft);
+  transition:
+    border-color 0.2s ease,
+    color 0.2s ease,
+    background 0.2s ease,
+    transform 0.2s ease;
 }
-.contact-links a:hover {
-  color: var(--accent);
+.contact-icon-btn svg {
+  width: 22px;
+  height: 22px;
 }
-.contact-links a::before {
-  content: "→";
+.contact-icon-btn:hover {
+  border-color: var(--accent);
   color: var(--accent);
+  background: var(--accent-soft);
+  transform: translateY(-2px);
 }
 
 footer {
@@ -548,19 +596,23 @@ footer {
 
 .detail-hero {
   position: relative;
-  height: 380px;
+  min-height: 220px;
   border-radius: 14px;
-  overflow: hidden;
   border: 1px solid var(--line);
   background: repeating-linear-gradient(135deg, var(--bg-alt), var(--bg-alt) 10px, var(--bg) 10px, var(--bg) 20px);
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 20px;
 }
 .detail-hero img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 520px;
+  border-radius: 10px;
+  filter: drop-shadow(0 8px 20px rgba(20, 21, 26, 0.12));
 }
 .detail-hero .glyph {
   font-family: var(--display);
@@ -601,8 +653,104 @@ footer {
   margin-top: 32px;
 }
 
+.detail-subhead {
+  font-family: var(--display);
+  font-size: 20px;
+  font-weight: 600;
+  margin-top: 40px;
+  margin-bottom: 14px;
+}
+
+/* Screenshot gallery */
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 14px;
+}
+.gallery-item {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--bg-alt);
+  cursor: zoom-in;
+  transition:
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+.gallery-item:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+.gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Lightbox (fullscreen screenshot viewer) */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.25s ease,
+    visibility 0.25s ease;
+}
+.lightbox.is-open {
+  opacity: 1;
+  visibility: visible;
+}
+.lightbox-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(20, 21, 26, 0.78);
+}
+.lightbox-img-wrap {
+  position: relative;
+  max-width: min(90vw, 920px);
+  max-height: 85vh;
+}
+.lightbox-img-wrap img {
+  display: block;
+  max-width: 100%;
+  max-height: 85vh;
+  border-radius: 10px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+}
+.lightbox-close {
+  position: absolute;
+  top: -46px;
+  right: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease;
+}
+.lightbox-close:hover {
+  background: rgba(255, 255, 255, 0.18);
+}
+
 @media (max-width: 640px) {
-  .detail-hero {
-    height: 220px;
+  .detail-hero img {
+    max-height: 320px;
   }
 }
